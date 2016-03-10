@@ -49,3 +49,5 @@ function differentValuesInMultiplicationTable2(n, m) {
     return holder.length;
 }
 
+console.log(differentValuesInMultiplicationTable2(5,3))
+

@@ -1,0 +1,90 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf340
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 Courier-Bold;\f2\fnil\fcharset0 Menlo-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red16\green21\blue28;\red27\green163\blue66;\red122\green69\blue204;
+\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sl340\sa200\qc\partightenfactor0
+
+\f0\b\fs32 \cf2 \expnd0\expndtw0\kerning0
+\ul \ulc2 \outl0\strokewidth0 \strokec2 The "Island Count" Problem\kerning1\expnd0\expndtw0 \ulnone \
+\pard\pardeftab720\sl390\sa200\partightenfactor0
+
+\b0\fs26 \cf2 \expnd0\expndtw0\kerning0
+Given a 2D matrix 
+\f1\b\fs28 \cf3 \strokec3 M
+\f0\b0\fs26 \cf2 \strokec2 , filled with either 
+\f1\b\fs28 \cf3 \strokec3 0
+\f0\b0\fs26 \cf2 \strokec2 s or 
+\f1\b\fs28 \cf3 \strokec3 1
+\f0\b0\fs26 \cf2 \strokec2 s, count the number of islands of 
+\f1\b\fs28 \cf3 \strokec3 1
+\f0\b0\fs26 \cf2 \strokec2 s in 
+\f1\b\fs28 \cf3 \strokec3 M
+\f0\b0\fs26 \cf2 \strokec2 .\uc0\u8232 An island is a group of adjacent values that are all 
+\f1\b\fs28 \cf3 \strokec3 1
+\f0\b0\fs26 \cf2 \strokec2 s. Every cell in 
+\f1\b\fs28 \cf3 \strokec3 M
+\f0\b0\fs26 \cf2 \strokec2  can be adjacent to the 4 cells that are next to it on the same row or column.\uc0\u8232 \u8232 
+\b Explain and code the most efficient solution possible and analyze its runtime complexity
+\b0 .\uc0\u8232 \u8232 
+\b Example:
+\b0  the matrix below has 6 islands:\uc0\u8232 
+\f2\b\fs24 \cf4 \strokec4 \uc0\u8232 \cb5 \'a0 \'a0 \'a0\'a0\'a0\'a00 \'a01\'a0 0\'a0 1\'a0 1\cb1 \uc0\u8232 \cb5 \'a0 \'a0 \'a0 \'a0 0 \'a00 \'a01 \'a01 \'a01\cb1 \uc0\u8232 \cb5 \'a0 \'a0 \'a0 \'a0 1 \'a00 \'a00 \'a01 \'a00\cb1 \uc0\u8232 \cb5 \'a0 \'a0 \'a0 \'a0 0\'a0 1\'a0 1\'a0 0\'a0 0\cb1 \uc0\u8232 \cb5 \'a0 \'a0 \'a0 \'a0 1\'a0 0\'a0 1\'a0 0\'a0 1
+\f0\b0\fs26 \cf2 \cb1 \strokec2 \
+\
+\
+/*\
+Given a 2D matrix M, filled with either 0s or 1s, count the number of islands of 1s in M.\
+An island is a group of adjacent values that are all 1s. Every cell in M can be adjacent to the 4 cells that are next to it on the same row or column.\
+\
+Example: the matrix below has 6 islands:\
+\
+        0  1  0  1  0\
+        0  0  1  1  1\
+        1  0  0  1  0\
+        0  1  1  0  0\
+        1  0  1  0  1\
+        \
+        This problem is very similar to counting the number of connected components in an undirected graph. However, graph theory is not a must to solve this problem or to understand its solution. In an undirected graph a connected component is a group or vertices in which every vertex is connected to at least one other vertex. In a similar way, and island in the matrix it is a group of adjacent (connected) 1s.\
+        \
+        \
+        We count the number of islands into a counter named islands while scanning all numbers in M.\
+We change every visited value of 1 into 2 to prevent re-counting. When encountering 1 in the linear scan, we increase islands and then expand to all adjacent 4 values in M and replace all 1s on the island.\
+\
+\
+Expanding from the first 1 on the island is similar to running a Breadth-First Search (BFS) or a Depth-First Search (BFS) from it. We will avoid using recursion and use an iterative approach to expand to all nearby values. We do that with a queue that holds the next indices to visit, and keep expanding on the island as long as the queue is not empty. Whenever we encounter a value of 2 on our linear scan we ignore it, since it is part on an island we already counted.\
+\
+\
+\
+function islandCounter(M):\
+   islands = 0\
+   if (M == null OR M.length == 0):\
+      return 0\
+   m = M.length # number of rows\
+   n = M[0].length # number of columns\
+\
+   for i from 0 to m-1\
+      for j from 0 to n-1\
+         if (M[i][j] == 1):\
+            markIsland(M, m, n, i, j)\
+            islands++\
+\
+function markIsland(M, m, n, i, j):\
+   q = new Queue\
+   q.push([i,j])\
+   while (!q.isEmpty()):\
+      i = q.pop()\
+      if (M[i[0]][i[1]] == 1):\
+         M[i[0]][i[1]] = 2\
+         pushIfValid(q, m, n, i-1, j)\
+         pushIfValid(q, m, n, i, j-1)\
+         pushIfValid(q, m, n, i+1, j)\
+         pushIfValid(q, m, n, i, j+1)\
+\
+function pushIfValid(q, m, n, x, y):\
+   if (x>=0 AND x<m AND y>=0 AND y<n):\
+      q.push([x,y])\
+      \
+  }
